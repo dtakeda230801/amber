@@ -92,11 +92,8 @@ class cObjectManager:
             self.currentObj.h       = 0
             (self.currentObj.x, self.currentObj.y) = self.request_current_location()
 
-            if objType == 'curve' or objType == 'triangle':
+            if objType == 'curve' or objType == 'triangle' or objType == 'freeline' or objType == 'freearrow':
                 self.currentObj.points = [(self.currentObj.x, self.currentObj.y),(self.currentObj.x, self.currentObj.y)]
-            elif objType == 'freeline' or objType == 'freearrow':
-                self.currentObj.points = [(self.currentObj.x, self.currentObj.y),(self.currentObj.x, self.currentObj.y)]
-
             else:
                 self.points = []
             self.on_mode_change()
@@ -139,8 +136,9 @@ class cObjectManager:
             self.currentObj.points[pointNum-1] = (x,y)
 
         else:
-            self.currentObj.w = x - self.currentObj.x
-            self.currentObj.h = y - self.currentObj.y
+            self.currentObj.w = abs(x - self.currentObj.x)
+            self.currentObj.h = abs(y - self.currentObj.y)
+            self.currentObj.points = [(self.currentObj.x,self.currentObj.y),(x,y)]
 
         self._update()
 
@@ -160,29 +158,28 @@ class cObjectManager:
         if self.state != 'figure' and self.state != 'freeline':
             return
         
-        if self.currentObj.objType == 'triangle' or self.currentObj.objType == 'freeline' or self.currentObj.objType == 'freearrow':
-            minX = self.currentObj.x
-            minY = self.currentObj.y
-            maxX = self.currentObj.x
-            maxY = self.currentObj.y
-            for point in self.currentObj.points:
-                if point[0] < minX:
-                    minX = point[0]
+        minX = self.currentObj.x
+        minY = self.currentObj.y
+        maxX = self.currentObj.x
+        maxY = self.currentObj.y
+        for point in self.currentObj.points:
+            if point[0] < minX:
+                minX = point[0]
 
-                if point[1] < minY:
-                    minY = point[1]
+            if point[1] < minY:
+                minY = point[1]
 
-                if point[0] > maxX:
-                    maxX = point[0]
+            if point[0] > maxX:
+                maxX = point[0]
 
-                if point[1] > maxY:
-                    maxY = point[1]
+            if point[1] > maxY:
+                maxY = point[1]
 
-            self.currentObj.x = minX
-            self.currentObj.y = minY
+        self.currentObj.x = minX
+        self.currentObj.y = minY
 
-            self.currentObj.w = maxX - minX
-            self.currentObj.h = maxY - minY
+        self.currentObj.w = maxX - minX
+        self.currentObj.h = maxY - minY
 
         if self.currentObj.w > 0 or self.currentObj.h > 0:
             self.objs.insert(0,self.currentObj)
@@ -248,7 +245,7 @@ class cObjectManager:
         text    = ''.join(self.currentObj.text)
         points  = self.currentObj.points
 
-        self.on_object_draw(x,y,objType,tag,w,h,text,points,color)
+        self.on_object_draw(x,y,objType,tag,text,points,color)
 
     def _makeTag(self):
         tag = uuid.uuid4()

@@ -71,23 +71,23 @@ class cMainWindow(Frame):
         self.canvas.delete(tag)
         self.canvas.create_oval(x,y,x+w,y+h,fill=color,outline=color,width=5, tag=tag)
 
-    def _onObjectDraw(self,x,y,objType,tag,w,h,text,points,color):
+    def _onObjectDraw(self,x,y,objType,tag,text,points,color):
         self.canvas.delete(tag)
 
         if objType == 'text':
             self.canvas.create_text(x,y,text=text,anchor='nw', font=('ＭＳ ゴシック',18), tag=tag,fill=color)
         elif objType == 'line':
-            self.canvas.create_line(x,y,x+w,y+h,fill=color,width=5, tag=tag)
+            self.canvas.create_line(points,fill=color,width=5, tag=tag)
         elif objType == 'arrow':
-            self.canvas.create_line(x,y,x+w,y+h,fill=color,width=5, tag=tag, arrow=LAST)
+            self.canvas.create_line(points,fill=color,width=5, tag=tag, arrow=LAST)
         elif objType == 'curve':
             self.canvas.create_line(points,fill=color,width=5, tag=tag, arrow=LAST, smooth=1)
         elif objType == 'rectangle':
-            self.canvas.create_rectangle(x,y,x+w,y+h,outline=color,width=5, tag=tag)
+            self.canvas.create_rectangle(points,outline=color,width=5, tag=tag)
         elif objType == 'triangle':
             self.canvas.create_line(points,fill=color,width=5, tag=tag)
         elif objType == 'ellipse':
-            self.canvas.create_oval(x,y,x+w,y+h,outline=color,width=5, tag=tag)
+            self.canvas.create_oval(points,outline=color,width=5, tag=tag)
         elif objType == 'freeline':
             self.canvas.create_line(points,fill=color,width=5, tag=tag, smooth=1)
         elif objType == 'freearrow':
