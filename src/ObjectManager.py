@@ -231,7 +231,7 @@ class cObjectManager:
         print(x,y,tag)
         if tag != None:
             self.objs.remove(self._findObjByTag(tag))
-            self.on_object_draw(None,None,None,tag,None,None,None,None,None)
+            self.on_object_draw(None,None,None,tag,None,None,None)
             self.on_mode_change()
 
     def _update(self):
