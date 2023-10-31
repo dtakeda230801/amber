@@ -92,10 +92,7 @@ class cObjectManager:
             self.currentObj.h       = 0
             (self.currentObj.x, self.currentObj.y) = self.request_current_location()
 
-            if objType == 'curve' or objType == 'triangle' or objType == 'freeline' or objType == 'freearrow':
-                self.currentObj.points = [(self.currentObj.x, self.currentObj.y),(self.currentObj.x, self.currentObj.y)]
-            else:
-                self.points = []
+            self.currentObj.points = [(self.currentObj.x, self.currentObj.y),(self.currentObj.x, self.currentObj.y)]
             self.on_mode_change()
             self._update()
 
