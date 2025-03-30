@@ -75,7 +75,10 @@ class cCommandGenerator:
         self.object_manager.handleBackSpace()
 
     def setReturn(self):
-        self.object_manager.handleReturn()
+        if self.object_manager.isEditingFigure() or self.object_manager.isEditingFreeline():
+            self.object_manager.commitFigure()
+        else:
+            self.object_manager.handleReturn()
 
 
 
